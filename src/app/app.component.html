@@ -1,0 +1,168 @@
+    <div class="page-wrapper bg-dark p-t-100 p-b-50">
+        <div class="wrapper wrapper--w900">
+            <div class="card card-6">
+                <div class="card-heading">
+                    <h2 class="title">Submit Blog Here</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" [formGroup]="blogForm">
+                        <div class="form-row">
+                            <div class="name">Author name</div>
+                            <div class="value">
+                                <input class="input--style-6" type="text" name="full_name" formControlName="authorName">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Author Email</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-6" type="email" name="email" placeholder="example@email.com" formControlName="email">
+                                </div>
+                                <div class="label--desc" *ngIf = "blogForm.get('email').errors && blogForm.get('email').dirty &&
+      blogForm.get('email').errors.notValidUrl">Enter a valid email!</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">About Author</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" name="message" placeholder="Few words about author of the blog" formControlName="aboutAuthor"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Author Image</div>
+                            <div class="value">
+                                <div class="input-group js-input-file">
+                                   <angular-file-uploader class="label--file" for="file" type="file" (ApiResponse)="authorImageUpload($event)"
+                                      [config]="afuConfig">
+                                      </angular-file-uploader>
+                                    <span class="input-file__info">No file chosen</span>
+                                </div>
+                                <div class="label--desc">Upload your image. Max file size 1 MB</div>
+                            </div>
+                        </div>
+                          <div class="form-row">
+                            <div class="name">Title</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" name="message" placeholder="Title of the blog" formControlName = "title"></textarea>
+                                </div>
+                            </div>
+                        </div>  
+                         <div class="form-row">
+                        <p class="text">
+        <label>Category 1</label>
+        <select (change)="onChange($event,'category1')">
+          <option value="select">Select</option>
+  <option *ngFor= "let category of categories" value="{{category.mainCategory}}">{{category.mainCategory}}</option>
+</select>
+        <label>Sub Category 1</label>
+        <select *ngIf="subCategory1"  (change)="onSubChange($event,'Scategory1')">
+          <option value="select">Select</option>
+<option *ngFor= "let subCategory of subCategory1"  value="{{subCategory.name}}" #subCategory1>{{subCategory.name}}</option>
+
+</select>
+      </p>
+      <p class="text">
+        <label>Category 2</label>
+        <select (change)="onChange($event,'category2')">
+          <option value="select">Select</option>
+<option *ngFor= "let category of categories" value="{{category.mainCategory}}">{{category.mainCategory}}</option>
+</select>
+        <label>Sub Category 2</label>
+        <select *ngIf="subCategory2" (change)="onSubChange($event,'Scategory2')">
+          <option value="select">Select</option>
+<option *ngFor= "let subCategory of subCategory2" value="{{subCategory.name}}" #subCategory2>{{subCategory.name}}</option>
+
+</select>
+      </p>
+      <p class="text">
+        <label>Category 3</label>
+        <select  (change)="onChange($event,'category3')">
+          <option value="select">Select</option>
+<option *ngFor= "let category of categories" value="{{category.mainCategory}}">{{category.mainCategory}}</option>
+</select>
+        <label>Sub Category 3</label>
+        <select *ngIf="subCategory3" (change)="onSubChange($event,'Scategory3')">
+          <option value="select">Select</option>
+<option *ngFor= "let subCategory of subCategory3" value="{{subCategory.name}}" #subCategory3>{{subCategory.name}}</option>
+
+</select>
+      </p>
+                         </div>
+                      <div class="form-row">
+                            <div class="name">Blog Image</div>
+                            <div class="value">
+                                <div class="input-group js-input-file">
+                                   <angular-file-uploader class="label--file" for="file" type="file" (ApiResponse)="blogImageUpload($event)"
+                                      [config]="afuConfig" >
+                                      </angular-file-uploader>
+                                    <span class="input-file__info">No file chosen</span>
+                                </div>
+                                <div class="label--desc">Upload suitable image describing your bolg. Max file size 1 MB</div>
+                            </div>
+                        </div>      
+
+                        <div class="form-row"  *ngFor = "let content of blogForm.get('contents').value">
+                            
+                            <div class="name">{{content.type}}</div>
+                            <div class="value" *ngIf = "content.type != 'descImage'">
+                                <div class="input-group">
+                                   <textarea class="textarea--style-6"  name="message" placeholder="Message sent to the employer" 
+                                   value = "{{content.content}}" formControlName = "intro"></textarea>             
+                                </div>
+                            </div>
+
+                               <div class="value" *ngIf = "content.type == 'descImage'">
+                                <div class="input-group js-input-file">
+
+                                    
+                                     <angular-file-uploader class="label--file" for="file" type="file" (ApiResponse)="contentDocUpload($event)"
+                                      [config]="afuConfig">
+                                      </angular-file-uploader>
+                                    
+                                    <span class="input-file__info">No file chosen</span>
+                                </div>
+                                <div class="label--desc">Upload your image. Max file size 1 MB</div>
+                            </div>
+                            
+                        </div>
+                         <div class="form-row">
+                            <div class="name">Add Content</div>
+                            <div class="value">
+                                <div class="input-group">
+                                  <select #contentType>
+  <option value="leadPara">leadPara</option>
+  <option value="h2Heading">h2Heading</option>
+  <option value="simplePara">simplePara</option>
+  <option value="h3Heading">h3Heading</option>
+  <option value="codePara">codePara</option>
+  <option value="listPara">listPara</option>
+
+</select>
+<textarea class="textarea--style-6"  name="message" placeholder="Content Here" #newContent></textarea> 
+          
+ <button class="btn btn--radius-2 btn--blue-2" (click)="onAddContent(contentType.value, newContent.value)">Add</button>
+  <button class="btn btn--radius-2 btn--blue-2" (click)="onAddImage('descImage', '')">Add Image</button>
+ <button class="btn btn--radius-2 btn--blue-2"(click)="onDeleteContent()">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="form-row">
+                            <div class="name">Tags</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" name="message" placeholder="Tags seperated by comma" formControlName = "tags"></textarea>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="card-footer">
+                    <button class="btn btn--radius-2 btn--blue-2" type="submit"  (click)="onSubmit()">Submit Blog</button>
+                </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
